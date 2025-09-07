@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row" id="row"></div>
+    </div>
+
+    <script>
+        axios.get("https://api.everrest.educata.dev/shop/products/all?page_size=12").then(function(response){
+            console.log(response.data.products)
+
+            response.data.products.forEach(function(product){
+                var col = document.createElement("div")
+                col.className = "col-lg-3 col-6 mb-4"
+
+                var card = document.createElement("div")
+                card.className = "card h-100"
+                card.addEventListener("click", function(){
+                    window.location.href = "product.html?id=" + product._id
+                })
+
+                var img = document.createElement("img")
+                img.src = product.thumbnail
+                img.className = "card-img-top"
+                img.style.height = "200px"
+                img.style.objectFit = "contain"
+
+                var cardBody = document.createElement("div")
+                cardBody.className = "card-body"
+
+                var title = document.createElement("h5")
+                title.textContent = product.title
+                title.className = "card-title"
+
+                var price = document.createElement("p")
+                price.textContent = "$" + product.price.current
+                price.clasName = "card-text"
+
+                var rating = document.createElement("p")
+                rating.textContent = "rating: " + product.rating.toFixed(1)
+                rating.clasName = "card-text"
+
+                var addToCart = document.createElement("button")
+                addToCart.textContent = "add to cart"
+                addToCart.className = "btn btn-primary"
+
+                cardBody.appendChild(title)
+                cardBody.appendChild(price)
+                cardBody.appendChild(rating)
+                cardBody.appendChild(addToCart)
+
+                card.appendChild(img)
+                card.appendChild(cardBody)
+
+                col.appendChild(card)
+
+                document.getElementById("row").appendChild(col)
+            })
+        }).catch(function(error) {
+            console.log(error)
+        })
+    </script>
+</body>
+</html>
