@@ -13,7 +13,7 @@
         <div class="row justify-content-center mt-5">
             <div class="col-6">
                 <h2 class="h2">Sign up</h2>
-                <form onsubmit="login(event)">
+                <form onsubmit="signUp(event)">
                     <div class="form-group mt-3">
                         <label>first name</label>
                         <input type="text" class="form-control" id="first_name" name="first_name">
@@ -62,7 +62,7 @@
     </div>
 
     <script>
-        function login(event) {
+        function signUp(event) {
             event.preventDefault()
 
             const fields = {
@@ -99,13 +99,11 @@
                     phone: fields.phone.value,
                     avatar: fields.avatar.value,
                     gender: fields.gender.value,
-                    zip: fields.zip.value,
+                    zipcode: fields.zip.value,
                     address: fields.address.value
-                }
-                ).then(function(response){
-                    console.log(response)
+                }).then(function(response){
                     window.localStorage.setItem("access_token", response.data.access_token)
-                    window.location.href = "index.html"
+                    window.location.href = "sign_in.html"
                 }).catch(function(error){
                     window.alert("something went wrong failed try again")
                     console.log(error)
