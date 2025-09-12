@@ -15,7 +15,7 @@
     </div>
 
     <script>
-        axios.get("https://api.everrest.educata.dev/shop/products/all?page_size=12").then(function(response){
+        axios.get("https://api.everrest.educata.dev/shop/products/all?page_size=32").then(function(response){
             console.log(response.data.products)
 
             response.data.products.forEach(function(product){
@@ -24,9 +24,6 @@
 
                 var card = document.createElement("div")
                 card.className = "card h-100"
-                card.addEventListener("click", function(){
-                    window.location.href = "product.html?id=" + product._id
-                })
 
                 var img = document.createElement("img")
                 img.src = product.thumbnail
@@ -40,6 +37,9 @@
                 var title = document.createElement("h5")
                 title.textContent = product.title
                 title.className = "card-title"
+                title.onclick =  function(){
+                    window.location.href = "product.html?id=" + product._id
+                }
 
                 var price = document.createElement("p")
                 price.textContent = "$" + product.price.current

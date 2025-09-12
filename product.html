@@ -111,15 +111,17 @@
 
             document.getElementById("col1").appendChild(img)
 
-            document.getElementById("col2").appendChild(title)
-            document.getElementById("col2").appendChild(price)
-            document.getElementById("col2").appendChild(brand)
-            document.getElementById("col2").appendChild(rating)
-            document.getElementById("col2").appendChild(stock)
-            document.getElementById("col2").appendChild(review)
-            document.getElementById("col2").appendChild(addToCart)
-            document.getElementById("col2").appendChild(description)
-            document.getElementById("col2").appendChild(reviews)
+            let col2 = document.getElementById("col2")
+            
+            col2.appendChild(title)
+            col2.appendChild(price)
+            col2.appendChild(brand)
+            col2.appendChild(rating)
+            col2.appendChild(stock)
+            col2.appendChild(review)
+            col2.appendChild(addToCart)
+            col2.appendChild(description)
+            col2.appendChild(reviews)
         })
 
         document.getElementById("review").addEventListener("click", function(){
