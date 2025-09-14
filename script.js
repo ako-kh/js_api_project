@@ -20,3 +20,31 @@ function addToCart_f(product_id, quantity=1) {
         })
     })
 }
+
+function addButton(){
+    let mynav = document.getElementById("mynavbar")
+    if (window.localStorage.getItem("access_token") != null){
+        let logout_btn = document.createElement("button")
+        logout_btn.className = "btn btn-danger"
+        logout_btn.innerText = "log out"
+        logout_btn.onclick = function(){
+            axios.post("https://api.everrest.educata.dev/auth/sign_out").then(function(response){
+                window.localStorage.removeItem("access_token")
+                window.location.href = "index.html"
+            }).catch(function(error){
+                console.log(error)
+            })
+        }
+        mynav.appendChild(logout_btn)
+    }else{
+        let login_btn = document.createElement("button")
+        login_btn.className = "btn btn-success"
+        login_btn.innerText = "log in"
+        login_btn.onclick = function(){
+            window.location.href = "sign_in.html"
+        }
+        mynav.appendChild(login_btn)
+    }
+}
+
+addButton()
