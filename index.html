@@ -11,13 +11,46 @@
 </head>
 <body>
     <div class="container">
-        <div class="row" id="row"></div>
+        <div class="row">
+            <div class="col-2">
+                <select id="category" class="form-select form-select-sm mb-3" aria-label="Small select example">
+                    <option selected>Category</option>
+                    <option value="1">Leptop</option>
+                    <option value="2">Phone</option>
+                </select>
+                <select id="brand" class="form-select form-select-sm mb-3" aria-label="Small select example">
+                    <option selected>Brand</option>
+                    <option value="lenovo">lenovo</option>
+                    <option value="asus">asus</option>
+                    <option value="acer">acer</option>
+                    <option value="apple">apple</option>
+                    <option value="hp">hp</option>
+                    <option value="samsung">samsung</option>
+                    <option value="lg">lg</option>
+                    <option value="xiaomi">xiaomi</option>
+                </select>
+                <select id="sort_by" class="form-select form-select-sm mb-3" aria-label="Small select example">
+                    <option selected>Sort by</option>
+                    <option value="price">pricce</option>
+                    <option value="rating">rating</option>
+                </select>
+                <select id="sort_direction" class="form-select form-select-sm mb-3" aria-label="Small select example">
+                    <option selected>Sort direction</option>
+                    <option value="desc">high to low</option>
+                    <option value="asc">low to high</option>
+                </select>
+                <button class="btn btn-primary" onclick="filter()">filter</button>
+            </div>
+            <div class="col-10">
+                <div class="container">
+                    <div class="row" id="row"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        axios.get("https://api.everrest.educata.dev/shop/products/all?page_size=32").then(function(response){
-            console.log(response.data.products)
-
+        function asamble_page(response){
             response.data.products.forEach(function(product){
                 var col = document.createElement("div")
                 col.className = "col-lg-3 col-6 mb-4"
@@ -68,9 +101,40 @@
 
                 document.getElementById("row").appendChild(col)
             })
+        }
+
+        axios.get("https://api.everrest.educata.dev/shop/products/all?page_size=32").then(function(response){
+            asamble_page(response)
         }).catch(function(error) {
             console.log(error)
         })
+        function filter(){
+            let category = document.getElementById("category").value
+            let brand = document.getElementById("brand").value
+            let sort_by = document.getElementById("sort_by").value
+            let sort_direction = document.getElementById("sort_direction").value
+            let filter_url = "https://api.everrest.educata.dev/shop/products/search?page_size=16&"
+
+            if (category !== "Category"){
+                filter_url += "category_id=" + category + "&"
+            }
+            if (brand !== "Brand"){
+                filter_url += "brand=" + brand + "&"
+            }
+            if (sort_by !== "Sort by"){
+                filter_url += "sort_by=" + sort_by + "&"
+            }
+            if (sort_direction !== "Sort direction" && sort_by !== "Sort_by"){
+                filter_url += "sort_direction=" + sort_direction + "&"
+            }
+
+            axios.get(filter_url).then(function(response){
+                document.getElementById("row").innerHTML = ""
+                asamble_page(response)
+            }).catch(function(error){
+                console.log(error)
+            })
+        }
     </script>
 </body>
 </html>

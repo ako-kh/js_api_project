@@ -17,7 +17,7 @@
             <div class="col-4 " id="buy">
                 <h3 class="h3">Total: $<span id="total"></span></h3>
                 <h5 class="h5">Quantity of items: <span id="quantity"></span></h5>
-                <button class="btn btn-success">buy now</button>
+                <button class="btn btn-success" id="buy">buy now</button>
             </div>
 
         </div>
@@ -97,6 +97,15 @@
         }).catch(function(error){
             console.log(error)
         })
+        console.log(HEADERS)
+        document.getElementById("buy").onclick = function(){
+            axios.post("https://api.everrest.educata.dev/shop/cart/checkout", {}, HEADERS).then(function(response){
+                alert("purchase successful")
+                window.location.reload()
+            }).catch(function(error){
+                console.log(error)
+            })
+        }
     </script>
 </body>
 </html>
