@@ -135,7 +135,7 @@
 
             axios.post("https://api.everrest.educata.dev/shop/products/rate", {
                 productId: productId,
-                rate: selectedRating,
+                rate: selectedRating
             }, {
                 headers: {
                     "Authorization": "Bearer " + window.localStorage.getItem("access_token")

@@ -43,12 +43,20 @@
         axios.get("https://api.everrest.educata.dev/shop/cart",
             HEADERS
         ).then(function(response){
-            if (response.data.total.quantity == 0){
+            let total_quantity = response.data.total.quantity
+            //let total_price = response.data.total.price.current
+            let total = response.data.total
+            if (total_quantity == 0){
                 let main_container = document.getElementById("main_container")
                 main_container.innerHTML = ""
                 main_container.innerHTML = "<h1 class='h1 text-center'>Cart is empty</h1>"
             }
-            let total = response.data.total
+
+            let total_price_span = document.getElementById("total")
+            let quantity_span = document.getElementById("quantity")
+            total_price_span.textContent = total.price.current
+            quantity_span.textContent = total_quantity
+
             response.data.products.forEach(function(product){
                 console.log(product)
                 axios.get("https://api.everrest.educata.dev/shop/products/id/" + product.productId).then(function(response1){
@@ -67,32 +75,61 @@
                     let price = document.createElement("p")
                     price.textContent = "$" + response1.data.price.current
 
-                    let quantity = document.createElement("p")
-                    quantity.textContent = "quantity: " + product.quantity
-
-
                     let text_div = document.createElement("div")
                     text_div.appendChild(title)
                     text_div.appendChild(price)
-                    text_div.appendChild(quantity)
+                    //text_div.appendChild(quantity)
 
-                    let n_input = document.createElement("input")
-                    n_input.type = "number"
-                    n_input.defaultValue = "1"
-                    
+                    //let n_input = document.createElement("input")
+                    //n_input.type = "number"
+                   // n_input.defaultValue = "1"
+
+                    let quantity_n = product.quantity
+                    let quantity = document.createElement("p")
+                    quantity.textContent = "quantity: " + quantity_n
+
+                    let decrease = document.createElement("button")
+                    decrease.className = "btn"
+                    decrease.textContent = "-"
+                    decrease.onclick = function(){
+                        if (quantity_n > 1){
+                            axios.patch("https://api.everrest.educata.dev/shop/cart/product",{
+                                id: product.productId,
+                                quantity: quantity_n -1
+                            }, HEADERS).then(function(btn_response){
+                                console.log(btn_response)
+                                quantity.textContent = "quantity: " + (quantity_n - 1)
+                                quantity_n -= 1
+                                total_price_span.textContent = btn_response.data.total.price.current
+                                quantity_span.textContent = btn_response.data.total.quantity
+                            }).catch(function(error){
+                                console.log(error)
+                            })
+                        }
+                    }
+
                     let increase = document.createElement("button")
-                    increase.className = "btn btn-primary"
+                    increase.className = "btn"
                     increase.textContent = "+"
                     increase.onclick = function(){
-                        let n = parseInt(n_input.value)
-                        if (n > 0) {
-                            addToCart_f(product.productId, product.quantity + n)
-                        }
+                        axios.patch("https://api.everrest.educata.dev/shop/cart/product",{
+                                id: product.productId,
+                                quantity: quantity_n + 1
+                            }, HEADERS).then(function(btn_response){
+                                quantity.textContent = "quantity: " + (quantity_n + 1)
+                                quantity_n += 1
+                                total_price_span.textContent = btn_response.data.total.price.current
+                                quantity_span.textContent = btn_response.data.total.quantity
+                            }).catch(function(error){
+                                console.log(error)
+                            })
                     }
 
                     let control_div = document.createElement("div")
                     control_div.className = "flex-fill d-flex justify-content-end align-items-center"
-                    control_div.appendChild(n_input)
+                    //control_div.appendChild(n_input)
+                    control_div.appendChild(quantity)
+                    control_div.appendChild(decrease)
                     control_div.appendChild(increase)
 
                     let delete_btn = document.createElement("button")
@@ -126,8 +163,6 @@
                     console.log(error)
                 })
             })
-            document.getElementById("total").textContent = total.price.current
-            document.getElementById("quantity").textContent = total.quantity
 
 
         }).catch(function(error){
