@@ -24,27 +24,12 @@
                     <h5 class="modal-title">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
-                        <label class="form-check-label" for="inlineRadio1">1</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
-                        <label class="form-check-label" for="inlineRadio2">2</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
-                        <label class="form-check-label" for="inlineRadio3">3</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="4">
-                        <label class="form-check-label" for="inlineRadio4">4</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="5">
-                        <label class="form-check-label" for="inlineRadio5">5</label>
-                    </div>
+                <div class="modal-body text-center">
+                    <span onclick="stars(1)" class="star h1">★</span>
+                    <span onclick="stars(2)" class="star h1">★</span>
+                    <span onclick="stars(3)" class="star h1">★</span>
+                    <span onclick="stars(4)" class="star h1">★</span>
+                    <span onclick="stars(5)" class="star h1">★</span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
@@ -93,7 +78,7 @@
 
             let addToCart = document.createElement("button")
             addToCart.textContent = "add to cart"
-            addToCart.className = "btn btn-primary"
+            addToCart.className = "btn btn-primary ms-3"
             addToCart.onclick = function(){
                 addToCart_f(productId)
             }
@@ -124,10 +109,22 @@
             col2.appendChild(reviews)
         })
 
+        let selectedRating = 0
+        function stars(rating) {
+            let starElements = document.getElementsByClassName("star")
+            selectedRating = rating
+
+            for (let i = 0; i < starElements.length; i++) {
+                if (i < rating) {
+                    starElements[i].style.color = "gold"
+                } else {
+                    starElements[i].style.color = "black"
+                }
+            }
+            
+        }
+
         document.getElementById("review").addEventListener("click", function(){
-            let selectedRating = Number(document.querySelector('input[name="inlineRadioOptions"]:checked').value)
-
-
             if (!selectedRating){
                 alert("please select a rating")
                 return
