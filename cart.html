@@ -68,6 +68,7 @@
                     img.src = response1.data.thumbnail
                     img.style.height = "100px"
                     img.style.objectFit = "contain"
+                    img.style.marginRight = "20px"
 
                     let title = document.createElement("h5")
                     title.textContent = response1.data.title
@@ -75,18 +76,20 @@
                     let price = document.createElement("p")
                     price.textContent = "$" + response1.data.price.current
 
+                    let rating = document.createElement("p")
+                    rating.textContent = "(" + response1.data.ratings.length + ") " + "★".repeat(response1.data.rating)
+
+                    //let reviews_n = document.createElement("p")
+                    //reviews_n.textContent = "re"
+
                     let text_div = document.createElement("div")
                     text_div.appendChild(title)
                     text_div.appendChild(price)
-                    //text_div.appendChild(quantity)
-
-                    //let n_input = document.createElement("input")
-                    //n_input.type = "number"
-                   // n_input.defaultValue = "1"
+                    text_div.appendChild(rating)
 
                     let quantity_n = product.quantity
                     let quantity = document.createElement("p")
-                    quantity.textContent = "quantity: " + quantity_n
+                    quantity.textContent = quantity_n
 
                     let decrease = document.createElement("button")
                     decrease.className = "btn"
@@ -98,7 +101,7 @@
                                 quantity: quantity_n -1
                             }, HEADERS).then(function(btn_response){
                                 console.log(btn_response)
-                                quantity.textContent = "quantity: " + (quantity_n - 1)
+                                quantity.textContent = quantity_n - 1
                                 quantity_n -= 1
                                 total_price_span.textContent = btn_response.data.total.price.current
                                 quantity_span.textContent = btn_response.data.total.quantity
@@ -116,7 +119,7 @@
                                 id: product.productId,
                                 quantity: quantity_n + 1
                             }, HEADERS).then(function(btn_response){
-                                quantity.textContent = "quantity: " + (quantity_n + 1)
+                                quantity.textContent = quantity_n + 1
                                 quantity_n += 1
                                 total_price_span.textContent = btn_response.data.total.price.current
                                 quantity_span.textContent = btn_response.data.total.quantity
@@ -127,13 +130,12 @@
 
                     let control_div = document.createElement("div")
                     control_div.className = "flex-fill d-flex justify-content-end align-items-center"
-                    //control_div.appendChild(n_input)
-                    control_div.appendChild(quantity)
                     control_div.appendChild(decrease)
+                    control_div.appendChild(quantity)
                     control_div.appendChild(increase)
 
                     let delete_btn = document.createElement("button")
-                    delete_btn.className = "btn btn-danger"
+                    delete_btn.className = "btn btn-danger ms-3"
                     delete_btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"> <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/> <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/> </svg>'
                     delete_btn.onclick = function(){
                         axios.delete("https://api.everrest.educata.dev/shop/cart/product", {
