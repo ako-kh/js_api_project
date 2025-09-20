@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-primary mb-5">
@@ -28,8 +27,9 @@
 
     <div class="container">
         <div class="row g-5">
-            <div class="col-lg-6 col-12" id="col1"></div>
-            <div class="col-lg-6 col-12" id="col2"></div>
+            <div class="col-lg-2 col-12" id="img_select"></div>
+            <div class="col-lg-5 col-12" id="col1"></div>
+            <div class="col-lg-5 col-12" id="col2"></div>
         </div>
     </div>
     
@@ -111,6 +111,22 @@
                 reviews.appendChild(eachRating)
             })
 
+            let img_select = document.getElementById("img_select")
+
+            product.images.forEach(function(img_src){
+                let other_image = document.createElement("img")
+                other_image.src = img_src
+                other_image.className = "mb-3 border"
+                other_image.style.width = "100%"
+                other_image.addEventListener("mouseenter", function(){
+                    img.src = img_src
+                })
+                other_image.addEventListener("mouseleave", function(){
+                    img.src = product.thumbnail
+                })
+                img_select.appendChild(other_image)
+            })
+            
             document.getElementById("col1").appendChild(img)
 
             let col2 = document.getElementById("col2")
